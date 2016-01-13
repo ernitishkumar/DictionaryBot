@@ -52,7 +52,7 @@ public class CommandListener {
 		ArrayList<DictionaryResponse> meanings=botCommunicator.getMeaning(text.trim());
 		String reply="";
 		if(meanings.size()==0){
-		reply="Unable to find meaning for : "+text.toUpperCase();
+		reply="Unable to find meaning for : "+text.toUpperCase()+"\nPlease try a different word";
 		}else if(meanings.size()>0){
 			DictionaryResponse meaning=meanings.get(0);
 			reply="Meaning of "+text.toUpperCase()+" : \n \n";

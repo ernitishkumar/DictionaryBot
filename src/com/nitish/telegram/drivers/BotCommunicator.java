@@ -70,10 +70,17 @@ public class BotCommunicator {
 	}
 	
 	public ArrayList<DictionaryResponse> getMeaning(String word) throws IOException,JSONException {
+		ArrayList<DictionaryResponse> meanings=new ArrayList<DictionaryResponse>();
 		CloseableHttpClient httpClient =  GlobalResources.proxyClientBuilder().build();
 		String sendMessageURL="http://dictionaryapi.net/api/definition/"+word.trim();
 		HttpGet httpGet = new HttpGet(sendMessageURL);
 		CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+		int responseCode=httpResponse.getStatusLine().getStatusCode();
+		System.out.println("Response Status : "+responseCode);
+		if(responseCode!=200){
+			httpClient.close();
+			return meanings;
+		}
 		BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
@@ -85,7 +92,6 @@ public class BotCommunicator {
 		//System.out.println(response.toString());
 		httpClient.close();
 		JSONArray recievedResponse=new JSONArray(response.toString().trim());
-		ArrayList<DictionaryResponse> meanings=new ArrayList<DictionaryResponse>();
 		for(int i=0;i<recievedResponse.length();i++){
 			JSONObject meaning=recievedResponse.getJSONObject(i);
 			if(meaning.getString("PartOfSpeech").trim().toLowerCase().equals("noun")){
