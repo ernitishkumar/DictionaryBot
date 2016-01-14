@@ -71,6 +71,13 @@ public class BotCommunicator {
 	
 	public ArrayList<DictionaryResponse> getMeaning(String word) throws IOException,JSONException {
 		ArrayList<DictionaryResponse> meanings=new ArrayList<DictionaryResponse>();
+		if(word.contains("$")||word.contains("#")||word.contains("@")||word.contains("!")||word.contains("%")||word.contains("^")||word.contains("&")||word.contains("*")){
+			return meanings;
+		}else if(!word.matches("^[a-zA-Z]*$")){
+			System.out.println("Inside regex for "+word);
+			return meanings;
+		}
+		
 		CloseableHttpClient httpClient =  GlobalResources.proxyClientBuilder().build();
 		String sendMessageURL="http://dictionaryapi.net/api/definition/"+word.trim();
 		HttpGet httpGet = new HttpGet(sendMessageURL);

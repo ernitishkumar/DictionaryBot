@@ -31,13 +31,22 @@ public class CommandListener {
 				// process commands
 				JSONObject message = resulArray.getJSONObject(i).getJSONObject("message");
 				int chat_id = message.getJSONObject("chat").getInt("id");
-				String username = message.getJSONObject("chat").getString("username");
+				System.out.println("Message array : "+message.toString());
+				String firstName="",lastName="",username="";
+				if(message.toString().contains("\"first_name\"")){
+					firstName=message.getJSONObject("chat").getString("first_name");
+				}else if(message.toString().contains("\"last_name\"")){
+					lastName=message.getJSONObject("chat").getString("last_name");
+				}else if(message.toString().contains("\"username\"")){
+					username=message.getJSONObject("chat").getString("username");
+				}
 				if(username==null)username="User";
 				String text = message.getString("text");
 				System.out.println("Message recieved as : "+text);
 				if (text.contains("/start")) {
-					String reply = "Hi "+username+", I am a Dictionary bot.\n" +
-							"You can get meanings of word by just sending any word to me.\n" +
+					String reply = "Hi "+firstName+", I am a very intelligent Dictionary bot.\n" +
+							"I am here to tell you meanings of any word you want, just type and send the word to me.\n" +
+							"Sometimes I behave naughty,I am still growing up! :p\n" +
 							"Your chat_id is " + chat_id + "\n" ;
 					botCommunicator.sendMessage(chat_id, reply);
 				}else{
